@@ -7,9 +7,9 @@ This is a follow up to my CI/CD for networking presentation for Packet Pushers V
 You can find the original Ansible version of this demo along with info on how to spin up the Vagrant environment and all that other good stuff [here](https://github.com/carlniger/packet_pushers_vdc).
 
 You can read about Nornir at the following links:
-[Nonir Docs](https://nornir.readthedocs.io/en/stable/)
-[Kirk Byer's Intro to Nornir](https://pynet.twb-tech.com/blog/nornir/intro.html)
-[Patrick Ogenstad's Intro to Nornir](https://networklore.com/introducing-brigade/)
+- [Nonir Docs](https://nornir.readthedocs.io/en/stable/)
+- [Kirk Byer's Intro to Nornir](https://pynet.twb-tech.com/blog/nornir/intro.html)
+- [Patrick Ogenstad's Intro to Nornir](https://networklore.com/introducing-brigade/)
 
 # Caveats/Notes
 
