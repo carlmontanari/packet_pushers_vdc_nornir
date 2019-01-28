@@ -4,7 +4,7 @@
 
 This is a follow up to my CI/CD for networking presentation for Packet Pushers VDC 3; this time, instead of using Ansible, I am using "pure Python" (Nornir, NAPALM, Netmiko) to render configurations, create backups, push configurations, and test/validate configurations.
 
-You can find the original Ansible version of this demo [here](https://github.com/carlniger/packet_pushers_vdc).
+You can find the original Ansible version of this demo along with info on how to spin up the Vagrant environment and all that other good stuff [here](https://github.com/carlniger/packet_pushers_vdc).
 
 You can read about Nornir at the following links:
 [Nonir Docs](https://nornir.readthedocs.io/en/stable/)
