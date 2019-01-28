@@ -6,8 +6,8 @@ username=admin
 password=P@ssw0rd
 
 [sea]
-sea-eos-1 ansible_host=localhost
-sea-nxos-1 ansible_host=localhost
+sea-eos-1 ansible_host=10.0.1.101
+sea-nxos-1 ansible_host=10.0.1.102
 
 [arista-eos]
 sea-eos-1
