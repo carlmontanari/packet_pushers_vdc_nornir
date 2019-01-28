@@ -1,0 +1,17 @@
+router ospf {{ vars.ospf_proc_id }}
+   router-id {{ vars.router_id }}
+   passive-interface default
+{% for interface, attrs in vars.ospf_interfaces.items() %}
+{% if not attrs['passive'] %}
+   no passive-interface {{ interface[5:] }}
+{% endif %}
+{% endfor %}
+{% for interface, attrs in vars.ospf_interfaces.items() %}
+{% if interface[5:] in vars.ethernet_interfaces %}
+   network {{ vars.ethernet_interfaces[interface[5:]]['routed']['ip'] }} area {{ attrs['area'] }}
+{% elif interface[5:] in vars.loopback_interfaces %}
+   network {{ vars.loopback_interfaces[interface[5:]]['routed']['ip'] }} area {{ attrs['area'] }}
+{% endif %}
+{% endfor %}
+   max-lsa 12000
+!

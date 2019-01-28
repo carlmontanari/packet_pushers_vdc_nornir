@@ -1,0 +1,19 @@
+router bgp {{ vars.bgp_asn }}
+   router-id {{ vars.router_id }}
+   maximum-paths {{ vars.bgp_max_paths_ibgp }}
+{% for neighbor, attrs in vars.bgp_ipv4_unicast['neighbors'].items() %}
+   neighbor {{ neighbor }} remote-as {{ attrs['remote-as'] }}
+   neighbor {{ neighbor }} update-source {{ attrs['update-source'] }}
+   neighbor {{ neighbor }} maximum-routes 12000
+{% endfor %}
+   !
+   address-family ipv4
+{% for neighbor in vars.bgp_ipv4_unicast['neighbors'].keys() %}
+      neighbor {{ neighbor }} activate
+{% endfor %}
+{% for network in vars.bgp_ipv4_unicast['networks'] %}
+      network {{ network }}
+      exit
+{% endfor %}
+   exit
+!

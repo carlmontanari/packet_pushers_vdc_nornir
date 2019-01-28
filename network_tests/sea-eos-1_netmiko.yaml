@@ -1,0 +1,22 @@
+---
+- ospf_peer:
+    _name: Validate sea-eos-1 to sea-nxos-1 OSPF Peer Ethernet2
+    _kwargs:
+      context: default
+      process_id: 1
+      interface: Ethernet2
+      peer_address: 10.255.254.0
+      peer_id: 10.255.255.2
+    success:
+      state: FULL
+
+- ospf_peer:
+    _name: Validate sea-eos-1 to sea-nxos-1 OSPF Peer Ethernet3
+    _kwargs:
+      context: default
+      process_id: 1
+      interface: Ethernet3
+      peer_address: 10.255.254.2
+      peer_id: 10.255.255.2
+    success:
+      state: FULL
