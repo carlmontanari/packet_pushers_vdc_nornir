@@ -36,6 +36,19 @@ def backup_configs(task):
                      getters=['config'])
         task.host['backup_config'] = r.result['config']['running']
 
+    if task.host.platform == 'eos':
+        infile = task.host['backup_config']
+        infile = infile.split('\n')
+        for index, line in enumerate(infile):
+            if (len(line) - len(line.lstrip()) == 6 and
+                    len(infile[index + 1])
+                    - len(infile[index + 1].lstrip()) != 6):
+                indent = ' ' * (len(infile[index]) -
+                                len(infile[index].lstrip()) - 3)
+                infile.insert(index + 1, f'{indent}!')
+        outfile = '\n'.join(infile)
+        task.host['backup_config'] = outfile
+
 
 def write_configs(task, backup=False):
     """
@@ -342,7 +355,9 @@ if __name__ == '__main__':
     failed_tasks = {**napalm_failed_tasks, **netmiko_failed_tasks}
 
     if failed_tasks:
-        print(f'failed tasks! {failed_tasks}')
+        print('The following task(s) failed:')
+        for host, task in failed_tasks.items():
+            print(f'Host: {host}, Task: {task}')
         rollback_task = nr.run(task=deploy_configs, backup=True)
         if any(r[0].failed is True for r in rollback_task.values()):
             print_result(rollback_task)
