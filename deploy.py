@@ -1,4 +1,5 @@
 import json
+import pathlib
 import time
 import sys
 import yaml
@@ -67,12 +68,14 @@ def write_configs(task, backup=False):
     """
     filename = task.host["dev_hostname"]
     if backup is False:
+        pathlib.Path("configs").mkdir(exist_ok=True)
         task.run(
             task=write_file,
             filename=f"configs/{filename}",
             content=task.host["config"],
         )
     else:
+        pathlib.Path("backup").mkdir(exist_ok=True)
         task.run(
             task=write_file,
             filename=f"backup/{filename}",
