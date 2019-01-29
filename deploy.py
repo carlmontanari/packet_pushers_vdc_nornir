@@ -12,7 +12,6 @@ from napalm.base import validate as npval
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
-# Testme
 # Disable urllib3 warnings
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
