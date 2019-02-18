@@ -1,0 +1,34 @@
+---
+all:
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
+    ssh_key_username: "vagrant"
+    ssh_key_file: "~/.vagrant.d/insecure_private_key"
+    username: "admin"
+    password: "P@ssw0rd"
+  children:
+    sea:
+      hosts:
+        sea-eos-1:
+          ansible_host: "10.0.1.101"
+        sea-nxos-1:
+          ansible_host: "10.0.1.102"
+      children:
+        arista-eos:
+          hosts:
+            sea-eos-1:
+          vars:
+            j2_template_file: "arista_eos.j2"
+            napalm_network_os: "eos"
+            platform: "eos"
+            netmiko_port: "22"
+            port: "444"
+        cisco-nxos:
+          hosts:
+            sea-nxos-1:
+          vars:
+            j2_template_file: "cisco_nxos.j2"
+            napalm_network_os: "nxos"
+            platform: "nxos"
+            netmiko_port: "22"
+            port: "444"
