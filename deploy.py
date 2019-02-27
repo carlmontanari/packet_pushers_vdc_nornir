@@ -96,7 +96,7 @@ def render_configs(task):
         name="Base Template Configuration",
         template=filename,
         path="templates",
-        vars=task.host,
+        **task.host,
     )
     task.host["config"] = r.result
 
