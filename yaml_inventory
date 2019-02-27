@@ -19,7 +19,6 @@ all:
             sea-eos-1:
           vars:
             j2_template_file: "arista_eos.j2"
-            napalm_network_os: "eos"
             platform: "eos"
             netmiko_port: "22"
             port: "444"
@@ -28,7 +27,6 @@ all:
             sea-nxos-1:
           vars:
             j2_template_file: "cisco_nxos.j2"
-            napalm_network_os: "nxos"
             platform: "nxos"
             netmiko_port: "22"
             port: "444"

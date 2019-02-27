@@ -14,7 +14,6 @@ sea-eos-1
 
 [arista-eos:vars]
 j2_template_file=arista_eos.j2
-napalm_network_os=eos
 platform=eos
 netmiko_port=22
 port=444
@@ -24,7 +23,6 @@ sea-nxos-1
 
 [cisco-nxos:vars]
 j2_template_file=cisco_nxos.j2
-napalm_network_os=nxos
 platform=nxos
 netmiko_port=22
 port=444
