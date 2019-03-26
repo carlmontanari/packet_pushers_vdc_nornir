@@ -20,16 +20,16 @@ username vagrant sshkey ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTky
 !
 clock timezone {{ timezone }}{{ timezone_offset }}{{ timezone_summer }}
 !
-{% include 'templates/eos_ethernet_interface.j2' ignore missing %}
-{% include 'templates/eos_loopback_interface.j2' ignore missing %}
+{% include 'eos_ethernet_interface.j2' ignore missing %}
+{% include 'eos_loopback_interface.j2' ignore missing %}
 interface Management1
    ip address dhcp
 !
 ip routing
 !
-{% include 'templates/eos_bgp.j2' ignore missing %}
+{% include 'eos_bgp.j2' ignore missing %}
 
-{% include 'templates/eos_ospf.j2' ignore missing %}
+{% include 'eos_ospf.j2' ignore missing %}
 
 management api http-commands
    no shutdown

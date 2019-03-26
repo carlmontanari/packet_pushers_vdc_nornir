@@ -1,2 +1,2 @@
 pre-commit==1.14.2
-nornir==2.0.0
+nornir>=2.0.0

@@ -56,7 +56,7 @@ def backup_configs(task):
         task.host["backup_config"] = outfile
 
 
-def write_configs(task, backup=False):
+def write_configs(task, backup=False, diff=False):
     """
     Nornir task to write device configurations to disk.
 
@@ -64,22 +64,30 @@ def write_configs(task, backup=False):
         task: nornir task object
 
     Kwargs:
-        backup: bool Optional: write backup or newly generated configs to file
+        backup: bool Optional: write backup to file
+        diff: bool Optional: write diffs to file
     """
     filename = task.host["dev_hostname"]
-    if backup is False:
-        pathlib.Path("configs").mkdir(exist_ok=True)
-        task.run(
-            task=write_file,
-            filename=f"configs/{filename}",
-            content=task.host["config"],
-        )
-    else:
+    if backup:
         pathlib.Path("backup").mkdir(exist_ok=True)
         task.run(
             task=write_file,
             filename=f"backup/{filename}",
             content=task.host["backup_config"],
+        )
+    elif diff:
+        pathlib.Path("diffs").mkdir(exist_ok=True)
+        task.run(
+            task=write_file,
+            filename=f"diffs/{filename}",
+            content=task.host["diff"],
+        )
+    else:
+        pathlib.Path("configs").mkdir(exist_ok=True)
+        task.run(
+            task=write_file,
+            filename=f"configs/{filename}",
+            content=task.host["config"],
         )
 
 
@@ -101,7 +109,7 @@ def render_configs(task):
     task.host["config"] = r.result
 
 
-def deploy_configs(task, backup=False):
+def deploy_configs(task, dry_run=False, diff=False, backup=False):
     """
     Nornir task to deploy device configurations.
 
@@ -122,12 +130,16 @@ def deploy_configs(task, backup=False):
         else:
             with open(f"backup/{filename}", "r") as f:
                 config = f.read()
-    task.run(
+    deployment = task.run(
         task=networking.napalm_configure,
         name="Deploy Configuration",
         configuration=config,
         replace=True,
+        dry_run=dry_run,
     )
+    task.host["diff"] = deployment.diff
+    if diff:
+        nr.run(task=write_configs, backup=False, diff=True)
 
 
 def napalm_tests(task):

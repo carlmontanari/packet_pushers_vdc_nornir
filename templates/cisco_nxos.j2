@@ -244,21 +244,21 @@ nxapi https port 444
 no nxapi ssl ciphers weak
 nxapi ssl protocols TLSv1.1 TLSv1.2
 
-{% include 'templates/nxos_ethernet_interface.j2' ignore missing %}
+{% include 'nxos_ethernet_interface.j2' ignore missing %}
 interface mgmt0
   ip address dhcp
   vrf member management
 
-{% include 'templates/nxos_loopback_interface.j2' ignore missing %}
+{% include 'nxos_loopback_interface.j2' ignore missing %}
 cli alias name wr copy run start
 line console
 line vty
 no feature signature-verification
 xml server timeout 1200
 
-{% include 'templates/nxos_ospf.j2' ignore missing %}
+{% include 'nxos_ospf.j2' ignore missing %}
 
-{% include 'templates/nxos_bgp.j2' ignore missing %}
+{% include 'nxos_bgp.j2' ignore missing %}
 
 no priority-flow-control override-interface mode off
 
