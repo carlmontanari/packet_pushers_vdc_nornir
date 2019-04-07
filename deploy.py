@@ -115,6 +115,7 @@ def deploy_configs(task, dry_run=False, diff=False, backup=False):
 
     Args:
         task: nornir task object
+        diff: bool Optional: generate diff of configs if true
         backup: bool Optional: deploy backup or newly generated configs to file
     """
     filename = task.host["dev_hostname"]
@@ -348,38 +349,42 @@ def determine_validate_fails(validate_result):
     return failed_tasks
 
 
-if __name__ == "__main__":
-    backup_task = nr.run(task=backup_configs)
-    if any(r[0].failed is True for r in backup_task.values()):
-        print_result(backup_task)
-        print("Couldn't backup configs, exiting before causing any chaos!...")
+def process_tasks(task):
+    """
+    Process task results, exit script on failure
+
+    Args:
+        task: nornir AggregatedResult object
+
+    Returns:
+        N/A
+    """
+    if task.failed:
+        print_result(task)
+        print("Exiting script before we break anything else!")
         sys.exit(1)
     else:
-        print("Backups completed successfully!")
+        print(f"Task {task.name} completed successfully!")
 
-    write_task = nr.run(task=write_configs, backup=True)
-    if any(r[0].failed is True for r in write_task.values()):
-        print_result(write_task)
-    else:
-        print("Writing backups to disk completed successfully!")
 
+if __name__ == "__main__":
     render_task = nr.run(task=render_configs)
-    if any(r[0].failed is True for r in render_task.values()):
-        print_result(render_task)
-    else:
-        print("Rendering configurations completed successfully!")
+    process_tasks(render_task)
 
     write_task = nr.run(task=write_configs)
-    if any(r[0].failed is True for r in write_task.values()):
-        print_result(write_task)
-    else:
-        print("Writing configurations to disk completed successfully!")
+    process_tasks(write_task)
 
-    deploy_task = nr.run(task=deploy_configs)
-    if any(r[0].failed is True for r in deploy_task.values()):
-        print_result(deploy_task)
-    else:
-        print("Deploying configurations completed successfully!")
+    backup_task = nr.run(task=backup_configs)
+    process_tasks(backup_task)
+
+    write_task = nr.run(task=write_configs, backup=True)
+    process_tasks(write_task)
+
+    deploy_task = nr.run(task=deploy_configs, dry_run=True, diff=True)
+    process_tasks(deploy_task)
+
+    deploy_task = nr.run(task=deploy_configs, dry_run=False, diff=False)
+    process_tasks(deploy_task)
 
     print("Sleeping for ten seconds before testing...")
     time.sleep(10)
