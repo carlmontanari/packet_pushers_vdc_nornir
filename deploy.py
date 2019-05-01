@@ -39,22 +39,6 @@ def backup_configs(task):
         )
         task.host["backup_config"] = r.result["config"]["running"]
 
-    if task.host.platform == "eos":
-        infile = task.host["backup_config"]
-        infile = infile.split("\n")
-        for index, line in enumerate(infile):
-            if (
-                len(line) - len(line.lstrip()) == 6
-                and len(infile[index + 1]) - len(infile[index + 1].lstrip())
-                != 6
-            ):
-                indent = " " * (
-                    len(infile[index]) - len(infile[index].lstrip()) - 3
-                )
-                infile.insert(index + 1, f"{indent}!")
-        outfile = "\n".join(infile)
-        task.host["backup_config"] = outfile
-
 
 def write_configs(task, backup=False, diff=False):
     """
@@ -119,18 +103,12 @@ def deploy_configs(task, dry_run=False, diff=False, backup=False):
         backup: bool Optional: deploy backup or newly generated configs to file
     """
     filename = task.host["dev_hostname"]
-    if task.host.platform == "nxos":
-        if backup is False:
-            config = task.host["config"].encode()
-        else:
-            with open(f"backup/{filename}", "rb") as f:
-                config = f.read()
+    if backup is False:
+        config = task.host["config"]
     else:
-        if backup is False:
-            config = task.host["config"]
-        else:
-            with open(f"backup/{filename}", "r") as f:
-                config = f.read()
+        with open(f"backup/{filename}", "rb") as f:
+            config = f.read()
+
     deployment = task.run(
         task=networking.napalm_configure,
         name="Deploy Configuration",

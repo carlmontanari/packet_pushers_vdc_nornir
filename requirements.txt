@@ -1,2 +1,4 @@
 pre-commit==1.14.2
 nornir>=2.0.0
+-e git+https://github.com/napalm-automation/napalm@774ec63e16d5224634805f680a75880fa3961530#egg=napalm
+-e git+https://github.com/ktbyers/netmiko@067ae7e0a45cf8bddb61c79710b89aed7fee7879#egg=netmiko
