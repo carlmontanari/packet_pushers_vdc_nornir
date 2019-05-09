@@ -22,7 +22,7 @@ def backup_configs(task):
         task: nornir task object
     """
     if task.host.platform == "nxos":
-        task.host.open_connection("napalm", task.host)
+        task.host.open_connection("napalm", None)
         r = task.host.connections["napalm"].connection._get_checkpoint_file()
         task.host["backup_config"] = r
     else:
